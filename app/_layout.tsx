@@ -27,11 +27,16 @@ const AppEntry = () => {
 
   const theme = useTheme();
 
-  const [fontsLoaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  const [fontsLoaded, error] = useFonts({
+    "Sora-Medium": require('../assets/fonts/Sora-Medium.ttf'),
+    "Sora-Regular": require('../assets/fonts/Sora-Regular.ttf'),
+
   });
 
 
+  useEffect(() => {
+    console.log(fontsLoaded)
+  }, [fontsLoaded])
 
   useEffect(() => {
 

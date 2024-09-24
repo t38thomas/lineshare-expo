@@ -16,7 +16,7 @@ function Text(props: TextProps) {
         else return { color: theme.colors.text }
     }, [props.reverse, theme.isDarkTheme]);
 
-    const textStyle: StyleProp<ViewStyle> = useMemo(() => ([textColor, props.style]), [textColor, styles.text, props.style]);
+    const textStyle: StyleProp<TextStyle> = useMemo(() => ([textColor, styles.text, props.style]), [textColor, styles.text, props.style]);
 
     return (
         <RNText style={textStyle}>{props.children}</RNText>
@@ -25,7 +25,8 @@ function Text(props: TextProps) {
 
 const styles = StyleSheet.create({
     text:{
-        fontSize: 17
+        fontSize: 14,
+        fontFamily: "Sora-Regular"
     }
 })
 
