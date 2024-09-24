@@ -1,37 +1,51 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import useTheme from "@/hooks/useTheme";
+import HomeTabIcon from "@/Screens/Home/Components/HomeTabIcon";
+import ProfileTabIcon from "@/Screens/Profile/Components/ProfileTabIcon";
+import TestTabIcon from "@/Screens/Test/Components/TestTabIcon";
+import { Tabs } from "expo-router";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+export default function TabsLayout() {
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+    const theme = useTheme();
 
-  return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
-  );
+    return (
+        <Tabs
+            safeAreaInsets={{ bottom: 0 }}
+
+            screenOptions={{
+                headerShown: false,
+                tabBarShowLabel: false,
+                tabBarHideOnKeyboard: true,
+                tabBarActiveTintColor: theme.colors.lineshare,
+                tabBarInactiveTintColor: "grey",
+                tabBarStyle: {
+                    backgroundColor: theme.colors.background
+                }
+
+            }}>
+            <Tabs.Screen
+                name="index"
+                options={{
+                    tabBarIcon: HomeTabIcon,
+
+                }}
+
+            />
+
+            <Tabs.Screen
+                name="profile"
+                options={{
+                    tabBarIcon: ProfileTabIcon,
+                }}
+            />
+
+            <Tabs.Screen
+                name="test"
+                options={{
+                    tabBarIcon: TestTabIcon,
+                }}
+            />
+
+        </Tabs>
+    )
 }

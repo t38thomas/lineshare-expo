@@ -1,37 +1,78 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import ThemeContextProvider from '@/Context/Theme/ThemeContext';
+import useTheme from '@/hooks/useTheme';
+import { Store } from '@/utils/Store';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
+
+  return (
+    <ThemeContextProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <AppEntry />
+      </SafeAreaView>
+    </ThemeContextProvider>
+  );
+}
+
+
+const AppEntry = () => {
+
+  const theme = useTheme();
+
+  const [fontsLoaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+
+
   useEffect(() => {
-    if (loaded) {
+
+    //login
+    // Store.User.get().then(console.log)
+
+  }, [])
+
+  const appReady = useMemo(() => {
+    return fontsLoaded;
+  }, [fontsLoaded])
+
+  useEffect(() => {
+    if (appReady) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [appReady]);
 
-  if (!loaded) {
+  useEffect(() => {
+    console.log("sono qui")
+  }, [])
+
+  if (!appReady) {
     return null;
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <Stack
+      initialRouteName='login'
+      screenOptions={{
+        headerShown: false,
+        statusBarColor: theme.colors.background,
+        navigationBarColor: theme.colors.background
+      }}
+    >
+      <Stack.Screen name="login" options={{ headerShown: false }} />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+    </Stack>
   );
+}
+
+const screenOptions = {
 }
