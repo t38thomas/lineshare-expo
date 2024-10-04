@@ -28,6 +28,7 @@ const AppEntry = () => {
   const theme = useTheme();
 
   const [fontsLoaded, error] = useFonts({
+    "Sora-Bold": require('../assets/fonts/Sora-Bold.ttf'),
     "Sora-Medium": require('../assets/fonts/Sora-Medium.ttf'),
     "Sora-Regular": require('../assets/fonts/Sora-Regular.ttf'),
 

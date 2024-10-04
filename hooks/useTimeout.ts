@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-export default function useTimeout<T>(value: T, delay:number = 500){
-
-    const [timeoutedValue, setTimeoutedValue] = useState<T>();
+export default function useTimeout(callback: () => void, delay: number = 500, deps: React.DependencyList) {
 
     useEffect(() => {
-        const timeout = setTimeout(() => setTimeoutedValue(value), delay);
+        const timeout = setTimeout(() => {
+            callback();
+        }, delay);
+
         return () => clearTimeout(timeout);
-    }, [value, delay])
-    
-    return timeoutedValue;
+    }, deps)
+
 }

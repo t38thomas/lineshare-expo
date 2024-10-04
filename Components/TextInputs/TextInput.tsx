@@ -13,7 +13,7 @@ function TextInput(props: TextInputProps) {
 
     const style: StyleProp<TextStyle> = useMemo(() => ([
         props.style,
-        { color: theme.colors.text, fontFamily: "Sora-Medium" }
+        { color: theme.colors.text, fontFamily: "Sora-Medium", outline:"none" }
     ]), [props.style, theme])
 
     return (

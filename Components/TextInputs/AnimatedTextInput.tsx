@@ -4,11 +4,16 @@ import { NativeSyntheticEvent, StyleProp, StyleSheet, TextInputFocusEventData, V
 import useTheme from "@/hooks/useTheme";
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring } from "react-native-reanimated";
 import { ValidationReturn, ValidationFunction } from "@/utils/Validation";
+import EnlargingContainer from "../Generali/EnlargingContainer";
 
 type AnimatedTextInputProps = {
     animated?: boolean
     validation?: ValidationFunction
-    width: number
+
+    /**
+     * @default 300
+     */
+    width?: number
 } & TextInputProps;
 
 export default function AnimatedTextInput(props: AnimatedTextInputProps) {
@@ -51,9 +56,14 @@ export default function AnimatedTextInput(props: AnimatedTextInputProps) {
             }
         }
     }, [validation, theme])
+    
+    const width = useMemo(() => {
+        if(props.width) return props.width;
+        else return 300;
+    }, [props.width])
 
     return (
-        <EnlargingContainer enlarge={isFocused} startWidth={props.width} endWidth={props.width + 50} style={enlargingContainerStyle}>
+        <EnlargingContainer enlarge={isFocused} startWidth={width} endWidth={width + 50} style={enlargingContainerStyle}>
             <TextInput
                 {...props}
                 onFocus={onFocus}
@@ -65,45 +75,7 @@ export default function AnimatedTextInput(props: AnimatedTextInputProps) {
     )
 }
 
-type EnlargingContainerProps = PropsWithChildren<{
-    enlarge?: boolean
-    startWidth: number
-    endWidth?: number
-    style?: StyleProp<ViewStyle>
-}>
-
-function EnlargingContainer(props: EnlargingContainerProps) {
-
-    const theme = useTheme();
-
-    const width = useSharedValue(props.startWidth);
-
-    useEffect(() => {
-        if (props.endWidth) {
-            if (props.enlarge) width.value = withSpring(props.endWidth);
-            else width.value = withSpring(props.startWidth);
-        }
-    }, [props.enlarge, props.endWidth])
-
-
-    const animatedStyle = useAnimatedStyle(() => ({
-        backgroundColor: theme.colors.secondary,
-        width: width.value
-    }), [width, theme])
-
-    return (
-        <Animated.View style={[props.style, styles.enlargingContainer, animatedStyle]}>
-            {props.children}
-        </Animated.View>
-    )
-}
-
 const styles = StyleSheet.create({
-    enlargingContainer: {
-        paddingVertical: 5,
-        paddingHorizontal: 15,
-        borderRadius: 20,
-    },
     textInput: {
         height: 50,
         fontSize: 17,

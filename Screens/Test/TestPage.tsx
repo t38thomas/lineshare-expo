@@ -1,24 +1,30 @@
 import Background from "@/Components/Generali/Background";
+import Button, { buttonStyles, useButtonText } from "@/Components/Generali/Button";
+import Icon from "@/Components/Generali/Icon";
 import Text from "@/Components/Generali/Text";
-import AnimatedTextInput from "@/Components/TextInputs/AnimatedTextInput";
-import TextInput from "@/Components/TextInputs/TextInput";
-import { Validation } from "@/utils/Validation";
-import { ScrollView, View } from "react-native";
-import Animated, { FadeIn } from "react-native-reanimated";
+import { View } from "react-native";
 
 export default function TestPage() {
+
+    const dis = true;
+
+    const textStyle1 = useButtonText();
+    const textStyle2 = useButtonText(dis);
+
     return (
         <Background>
+            <View style={{ flex: 1, justifyContent: "flex-end", alignItems: "center", flexDirection: "row", marginRight: 20 }}>
+                <Button>
+                    <Text style={textStyle1}>Accedi</Text>
+                </Button>
 
-            <ScrollView contentContainerStyle={{ flex: 1, marginHorizontal: 10, marginTop: 200, alignItems: "center" }}>
-                <AnimatedTextInput
-                    width={300}
-                    placeholder="Email"
-                    validation={Validation.email}
-                />
+                <View style={{ marginLeft: 20 }}>
+                    <Button disabledAll={dis} >
+                        <Text style={textStyle2}>Next <Icon name="arrow-right" size={17} color="gray" /></Text>
+                    </Button>
+                </View>
+            </View>
 
-
-            </ScrollView>
         </Background>
     )
 }
