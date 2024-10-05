@@ -45,7 +45,7 @@ export default function Button(props: ButtonProps) {
         <Pressable
             {...props}
             onPressIn={onPressIn}
-            style={{ borderRadius: 50, }}
+            disabled={props.disabledAll}
         >
             <EnlargingContainer startWidth={width} endWidth={width + 20} enlarge={animated ? enlarge : false} style={contentContainerStyle}>
                 {props.children}

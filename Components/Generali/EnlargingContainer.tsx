@@ -23,12 +23,9 @@ export default function EnlargingContainer(props: EnlargingContainerProps) {
         }
     }, [props.enlarge, props.endWidth])
 
-
     const animatedStyle = useAnimatedStyle(() => ({
         width: width.value
     }), [width])
-
-
 
     return (
         <Animated.View style={[styles.enlargingContainer, animatedStyle, { backgroundColor: theme.colors.secondary,}, props.style]} >

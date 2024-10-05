@@ -9,6 +9,7 @@ import EnlargingContainer from "../Generali/EnlargingContainer";
 type AnimatedTextInputProps = {
     animated?: boolean
     validation?: ValidationFunction
+    containerStyle?:StyleProp<ViewStyle>
 
     /**
      * @default 300
@@ -63,7 +64,7 @@ export default function AnimatedTextInput(props: AnimatedTextInputProps) {
     }, [props.width])
 
     return (
-        <EnlargingContainer enlarge={isFocused} startWidth={width} endWidth={width + 50} style={enlargingContainerStyle}>
+        <EnlargingContainer enlarge={isFocused} startWidth={width} endWidth={width + 50} style={[enlargingContainerStyle, props.containerStyle]}>
             <TextInput
                 {...props}
                 onFocus={onFocus}

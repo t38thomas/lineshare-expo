@@ -1,5 +1,6 @@
 import Text from "@/Components/Generali/Text";
 import { Stack } from 'expo-router';
+import React from "react";
 import { StyleSheet } from 'react-native';
 
 

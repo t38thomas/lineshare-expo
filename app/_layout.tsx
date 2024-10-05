@@ -5,6 +5,7 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useMemo } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -14,11 +15,13 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
 
   return (
-    <ThemeContextProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <AppEntry />
-      </SafeAreaView>
-    </ThemeContextProvider>
+    <GestureHandlerRootView>
+      <ThemeContextProvider>
+        <SafeAreaView style={{ flex: 1 }}>
+          <AppEntry />
+        </SafeAreaView>
+      </ThemeContextProvider>
+    </GestureHandlerRootView>
   );
 }
 
@@ -34,18 +37,6 @@ const AppEntry = () => {
 
   });
 
-
-  useEffect(() => {
-    console.log(fontsLoaded)
-  }, [fontsLoaded])
-
-  useEffect(() => {
-
-    //login
-    // Store.User.get().then(console.log)
-
-  }, [])
-
   const appReady = useMemo(() => {
     return fontsLoaded;
   }, [fontsLoaded])
@@ -55,10 +46,6 @@ const AppEntry = () => {
       SplashScreen.hideAsync();
     }
   }, [appReady]);
-
-  useEffect(() => {
-    console.log("sono qui")
-  }, [])
 
   if (!appReady) {
     return null;
