@@ -3,7 +3,8 @@ import { FlatList, Pressable, StyleProp, StyleSheet, ViewStyle } from 'react-nat
 import BottomSheet, { BottomSheetProps } from './BottomSheet';
 import Text from './Text';
 import Icon from './Icon';
-import IconPressable from './IconPressable';
+import EnlargingContainer from './EnlargingContainer';
+import useTimeout from '@/hooks/useTimeout';
 import useTheme from '@/hooks/useTheme';
 
 export type DropdownProps<T> = {
@@ -32,6 +33,11 @@ export type DropdownProps<T> = {
 export default function Dropdown<T>(props: DropdownProps<T>) {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const [enlargeClear, setEnlargeClear] = useState(false);
+
+    useTimeout(() => {
+        if (enlargeClear) setEnlargeClear(false);
+    }, 300, [enlargeClear]);
 
     const labelExtractor = useCallback((item: T) => {
         if (props.labelExtractor) return props.labelExtractor(item);
@@ -70,14 +76,29 @@ export default function Dropdown<T>(props: DropdownProps<T>) {
             >
                 <Text style={{ flex: 1 }}>{selectedLabel}</Text>
                 {props.clearable && props.selected !== undefined && (
-                    <IconPressable
-                        name="close-circle"
-                        size={18}
+                    <Pressable
+                        onPressIn={() => setEnlargeClear(true)}
                         onPress={() => onSelect(undefined)}
                         style={{ marginRight: 5 }}
-                    />
+                    >
+                        <EnlargingContainer
+                            enlarge={enlargeClear}
+                            startWidth={18}
+                            endWidth={22}
+                            style={styles.iconContainer}
+                        >
+                            <Icon name="close-circle" size={18} />
+                        </EnlargingContainer>
+                    </Pressable>
                 )}
-                <Icon name={open ? 'chevron-up' : 'chevron-down'} size={24} />
+                <EnlargingContainer
+                    enlarge={open}
+                    startWidth={24}
+                    endWidth={28}
+                    style={styles.iconContainer}
+                >
+                    <Icon name={open ? 'chevron-up' : 'chevron-down'} size={24} />
+                </EnlargingContainer>
             </Pressable>
             <BottomSheet
                 visible={open}
@@ -102,6 +123,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         borderRadius: 20,
         height: 50,
+    },
+    iconContainer: {
+        backgroundColor: 'transparent',
+        paddingVertical: 0,
+        paddingHorizontal: 0,
+        borderRadius: 0,
     },
     item: {
         paddingVertical: 15,
