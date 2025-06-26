@@ -1,4 +1,5 @@
 import Background from "@/Components/Generali/Background";
+import DatePicker from "@/Components/Generali/DatePicker";
 import Dropdown from "@/Components/Generali/Dropdown";
 import { useState } from "react";
 
@@ -27,13 +28,15 @@ export default function HomePage() {
 
             <Dropdown
                 items={items}
-                placeholder="Seleziona una persona..."
-                clearable
                 selected={value}
                 onSelect={setValue}
-                labelExtractor={x => x.name}
+                placeholder="Seleziona una persona..."
                 keyExtractor={x => x.name}
+                labelExtractor={x => x.name}
+                clearable
+
             />
+            <DatePicker placeholder="data" />
 
         </Background>
     )

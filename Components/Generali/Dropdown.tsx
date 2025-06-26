@@ -50,7 +50,7 @@ export default function Dropdown<T>(props: DropdownProps<T>) {
     }, [props.onSelect]);
 
     const selectedLabel = useMemo(() => {
-        if (props.selected === undefined) return props.placeholder ?? '';
+        if (props.selected === undefined) return props.placeholder ?? 'Seleziona...';
         return labelExtractor(props.selected);
     }, [props.selected, labelExtractor, props.placeholder]);
 
