@@ -2,6 +2,7 @@ import BottomSheet from "./BottomSheet";
 import Button, { useButtonText } from "./Button";
 import Text from "./Text";
 import useTheme from "@/hooks/useTheme";
+<<<<<<< HEAD
 import { DateFormat, mesi } from "@/utils/DateFormat";
 <<<<<<< HEAD
 import React, { useCallback, useMemo, useState, useEffect } from "react";
@@ -10,6 +11,12 @@ import { FlatList, Pressable, ScrollView, StyleProp, StyleSheet, TextInput, View
 import React, { useCallback, useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 >>>>>>> main
+=======
+import { DateFormat } from "@/utils/DateFormat";
+import React, { useCallback, useMemo, useState } from "react";
+import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import Calendar from "./Calendar";
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
 
 export type DateRange = {
     startDate?: Date;
@@ -28,6 +35,7 @@ export type RangeDatePickerProps = {
 export default function RangeDatePicker(props: RangeDatePickerProps) {
     const theme = useTheme();
     const [visible, setVisible] = useState(false);
+<<<<<<< HEAD
     const [start, setStart] = useState<Date>(props.value?.startDate ?? new Date());
     const [end, setEnd] = useState<Date>(props.value?.endDate ?? new Date());
 <<<<<<< HEAD
@@ -40,6 +48,10 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
     }, [yearQuery]);
 =======
 >>>>>>> main
+=======
+    const [start, setStart] = useState<Date | undefined>(props.value?.startDate);
+    const [end, setEnd] = useState<Date | undefined>(props.value?.endDate);
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
 
     const display = useMemo(() => {
         if (props.value?.startDate && props.value?.endDate) {
@@ -53,6 +65,7 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
     }, [props.value, props.placeholder]);
 
     const open = useCallback(() => {
+<<<<<<< HEAD
         setStart(props.value?.startDate ?? new Date());
         setEnd(props.value?.endDate ?? new Date());
 <<<<<<< HEAD
@@ -141,11 +154,45 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
         setEnd(date);
     }, [end, daysInMonth]);
 
+=======
+        setStart(props.value?.startDate);
+        setEnd(props.value?.endDate);
+        setVisible(true);
+    }, [props.value]);
+
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
     const confirm = useCallback(() => {
         setVisible(false);
         props.onChange?.({ startDate: start, endDate: end });
     }, [start, end, props.onChange]);
 
+<<<<<<< HEAD
+=======
+    const onSelect = useCallback((d: Date) => {
+        if (start && !end) {
+            if (d.getTime() < start.getTime()) {
+                setEnd(start);
+                setStart(d);
+            } else {
+                setEnd(d);
+            }
+        } else {
+            setStart(d);
+            setEnd(undefined);
+        }
+    }, [start, end]);
+
+    const isSelected = useCallback((day: Date) => {
+        if (start && end) {
+            const min = start.getTime() < end.getTime() ? start : end;
+            const max = start.getTime() < end.getTime() ? end : start;
+            return day.getTime() >= min.getTime() && day.getTime() <= max.getTime();
+        }
+        if (start && !end) return day.toDateString() === start.toDateString();
+        return false;
+    }, [start, end]);
+
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
     return (
         <>
             <Pressable
@@ -156,6 +203,7 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
             </Pressable>
             <BottomSheet visible={visible} onRequestClose={() => setVisible(false)}>
                 <View style={styles.pickerContainer}>
+<<<<<<< HEAD
                     <Text style={styles.label}>Dal</Text>
 <<<<<<< HEAD
                     <Pressable onPress={() => setYearSheet('start')}>
@@ -242,6 +290,15 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
                         </ScrollView>
 >>>>>>> main
                     </View>
+=======
+                    <Calendar
+                        date={end ?? start ?? new Date()}
+                        onSelect={onSelect}
+                        minimumDate={props.minimumDate}
+                        maximumDate={props.maximumDate}
+                        isSelected={isSelected}
+                    />
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
                     <View style={styles.buttonContainer}>
                         <Button onPress={confirm} width={150}>
                             <Text style={useButtonText()}>Conferma</Text>
@@ -249,6 +306,7 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
                     </View>
                 </View>
             </BottomSheet>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
             <BottomSheet visible={yearSheet !== undefined} onRequestClose={() => setYearSheet(undefined)}>
@@ -282,6 +340,8 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
             </BottomSheet>
 =======
 >>>>>>> main
+=======
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
         </>
     );
 }
@@ -298,15 +358,19 @@ const styles = StyleSheet.create({
         padding: 20,
         alignItems: "center",
     },
+<<<<<<< HEAD
     label: {
         fontSize: 16,
         fontFamily: "Sora-Bold",
         marginBottom: 10,
     },
+=======
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
     buttonContainer: {
         marginTop: 20,
         alignItems: "center",
     },
+<<<<<<< HEAD
     selectRow: {
         flexDirection: "row",
         columnGap: 10,
@@ -356,4 +420,6 @@ const styles = StyleSheet.create({
     },
 =======
 >>>>>>> main
+=======
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
 });
