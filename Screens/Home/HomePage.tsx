@@ -1,7 +1,5 @@
 import Background from "@/Components/Generali/Background";
-import DatePicker from "@/Components/Generali/DatePicker";
 import Dropdown from "@/Components/Generali/Dropdown";
-import RangeDatePicker from "@/Components/Generali/RangeDatePicker";
 import { useState } from "react";
 
 type Person = {
@@ -27,15 +25,15 @@ export default function HomePage() {
     return (
         <Background style={{ justifyContent: "center", alignItems: "center", padding: 15 }}>
 
-            <DatePicker
-
-                placeholder="Seleziona una data"
-             />
-
-             <RangeDatePicker 
-                placeholder="Seleziona una data"
-             />
-
+            <Dropdown
+                items={items}
+                placeholder="Seleziona una persona..."
+                clearable
+                selected={value}
+                onSelect={setValue}
+                labelExtractor={x => x.name}
+                keyExtractor={x => x.name}
+            />
 
         </Background>
     )
