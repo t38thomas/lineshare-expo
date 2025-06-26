@@ -6,7 +6,7 @@ Benvenuto nel progetto **LineShare Expo**, una base per applicazioni mobile real
 
 - **Navigazione tramite file-based routing**: le schermate sono definite nella cartella `app` e vengono collegate automaticamente.
 - **Tema chiaro e scuro**: grazie al `ThemeContext` l'interfaccia si adatta alle preferenze di sistema.
-- **Componenti riutilizzabili**: nella cartella `Components` trovi vari componenti (es. `BottomSheet`, `Dropdown`, `AnimatedTextInput`) pronti all'uso.
+- **Componenti riutilizzabili**: nella cartella `Components` trovi vari componenti (es. `BottomSheet`, `Dropdown`, `AnimatedTextInput`, `AutoComplete`) pronti all'uso.
 - **Esempi di pagine**: sono presenti una schermata Home con un esempio di dropdown, una pagina di Login e una sezione Test che mostra l'utilizzo di Bottom Sheet e campi di input animati.
 
 ## Installazione
