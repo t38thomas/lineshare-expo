@@ -4,7 +4,7 @@ import useTheme from "@/hooks/useTheme";
 import React, { PropsWithChildren, forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { Dimensions, Keyboard, Modal, Pressable, SafeAreaView, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
-import Animated, { SlideInDown, clamp, measure, runOnJS, runOnUI, useAnimatedRef, useAnimatedStyle, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
+import Animated, { SlideInDown, clamp, measure, runOnJS, runOnUI, useAnimatedRef, useAnimatedStyle, useDerivedValue, useSharedValue, withSpring, withTiming } from "react-native-reanimated";
 import Text from "./Text";
 import ColorBar from "./ColorBar/ColorBar";
 
@@ -96,7 +96,8 @@ export const BottomSheetComponent = forwardRef<BottomSheetRef, BottomSheetCompon
     const [snapSelected, setSnapSelected] = useState<number>(0);
     const [snapPointsDimension, setSnapPointDimension] = useState<number[]>(calcSnapPointDimension(props.snapPoints, heightOfWindow));
     const height = useSharedValue<number | undefined>(props.auto ? undefined : snapPointsDimension?.[0]);
-    const borderRadius = useSharedValue<number>(25);
+    const borderRadius = useDerivedValue(() => mapValue(height.value ?? 0, 0, heightOfWindow, 40, 0), [height])
+
 
     const requestClose = () => {
         if (height.value === undefined) {
@@ -124,31 +125,38 @@ export const BottomSheetComponent = forwardRef<BottomSheetRef, BottomSheetCompon
     }), [])
 
     const style = useAnimatedStyle(() => {
+
+
         return {
             height: height.value,
-            borderTopLeftRadius: mapValue(height.value ?? 0, 0, heightOfWindow, 40, 0),
-            borderTopRightRadius: mapValue(height.value ?? 0, 0, heightOfWindow, 40, 0),
+            borderTopLeftRadius: borderRadius.value,
+            borderTopRightRadius: borderRadius.value,
             overflow: "hidden"
         }
-    }, [height.value])
+    }, [height, borderRadius])
 
     const close = () => {
         props.onRequestClose();
     }
 
+    function onBegin() {
+        "worklet"
+        if (height.value === undefined) {
+            calculateHeight();
+            
+            if (height.value) {
+                const newArray = [...snapPointsDimension];
+                newArray.push(height.value);
+                newArray.sort();
+                console.log("quii", newArray)
+                runOnJS(setSnapPointDimension)(newArray);
+            }
+        }
+    }
+
     const Pan = Gesture
         .Pan()
-        .onBegin((event) => {
-            if (height.value === undefined) {
-                calculateHeight();
-                if (height.value) {
-                    const newArray = [...snapPointsDimension];
-                    newArray.push(height.value);
-                    newArray.sort();
-                    runOnJS(setSnapPointDimension)(newArray);
-                }
-            }
-        })
+        .onBegin(onBegin)
         .onChange((event) => {
             if (height.value) {
                 const newValue = height.value - event.changeY;
@@ -157,12 +165,17 @@ export const BottomSheetComponent = forwardRef<BottomSheetRef, BottomSheetCompon
             }
         })
         .onEnd((event) => {
-            if (height.value) {
+
+
+            if (height.value && snapPointsDimension.length > 0) {
+
+
                 // VERSO SOPRA
                 if (event.velocityY < 0) {
                     if ((-event.velocityY) > 70 && (snapSelected !== (snapPointsDimension.length - 1))) {
                         for (let i = snapSelected + 1; i < snapPointsDimension.length; i++) {
                             if (height.value < snapPointsDimension[i]) {
+
                                 height.value = withSpring(snapPointsDimension[i], { dampingRatio: 0.7 });
                                 runOnJS(setSnapSelected)(i);
                                 return;
@@ -171,7 +184,9 @@ export const BottomSheetComponent = forwardRef<BottomSheetRef, BottomSheetCompon
 
                     }
                     else {
-                        height.value = withSpring(snapPointsDimension[snapSelected], { dampingRatio: 0.7 })
+
+
+                        height.value = withSpring(snapPointsDimension.at(snapSelected) ?? 0, { dampingRatio: 0.7 })
                     }
                 }
                 else {
@@ -189,11 +204,12 @@ export const BottomSheetComponent = forwardRef<BottomSheetRef, BottomSheetCompon
                             }
                         }
 
-                        height.value = withSpring(snapPointsDimension[snapSelected], { dampingRatio: 0.7 })
+                        height.value = withSpring(snapPointsDimension.at(snapSelected) ?? 0, { dampingRatio: 0.7 })
 
                     }
                     else {
-                        height.value = withSpring(snapPointsDimension[snapSelected], { dampingRatio: 0.7 })
+
+                        height.value = withSpring(snapPointsDimension.at(snapSelected) ?? 0, { dampingRatio: 0.7 })
                     }
                 }
             }
@@ -202,7 +218,17 @@ export const BottomSheetComponent = forwardRef<BottomSheetRef, BottomSheetCompon
     return (
         <View style={{ flex: 1, flexDirection: "column", backgroundColor: "rgba(0,0,0,0.3)" }}>
             <Pressable style={{ flex: 1, cursor: "auto" }} onPress={close} />
-            <Animated.View ref={viewRef} entering={SlideInDown} style={[{ backgroundColor: "white" }, style, props.style,]} >
+            <Animated.View
+                ref={viewRef}
+                entering={SlideInDown}
+                style={[{ backgroundColor: "white" }, style, props.style,]}
+                onLayout={({ nativeEvent }) => {
+                    if (props.auto && height.value === undefined) {
+                        runOnUI(onBegin)();
+                    }
+                }}
+                collapsable={false}
+            >
                 <GestureDetector touchAction="pan-y" gesture={Pan} >
                     <View style={{ flexGrow: 1 }}>
 
