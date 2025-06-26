@@ -148,7 +148,6 @@ export const BottomSheetComponent = forwardRef<BottomSheetRef, BottomSheetCompon
                 const newArray = [...snapPointsDimension];
                 newArray.push(height.value);
                 newArray.sort();
-                console.log("quii", newArray)
                 runOnJS(setSnapPointDimension)(newArray);
             }
         }
