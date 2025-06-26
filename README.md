@@ -1,50 +1,51 @@
-# Welcome to your Expo app 👋
+# LineShare Expo
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Benvenuto nel progetto **LineShare Expo**, una base per applicazioni mobile realizzate con [Expo](https://expo.dev). Questo repository contiene un piccolo esempio di app in React Native con routing automatico, gestione del tema chiaro/scuro e alcuni componenti personalizzati.
 
-## Get started
+## Funzionalità principali
 
-1. Install dependencies
+- **Navigazione tramite file-based routing**: le schermate sono definite nella cartella `app` e vengono collegate automaticamente.
+- **Tema chiaro e scuro**: grazie al `ThemeContext` l'interfaccia si adatta alle preferenze di sistema.
+- **Componenti riutilizzabili**: nella cartella `Components` trovi vari componenti (es. `BottomSheet`, `Dropdown`, `AnimatedTextInput`) pronti all'uso.
+- **Esempi di pagine**: sono presenti una schermata Home con un esempio di dropdown, una pagina di Login e una sezione Test che mostra l'utilizzo di Bottom Sheet e campi di input animati.
+
+## Installazione
+
+1. Installa le dipendenze
 
    ```bash
    npm install
    ```
-
-2. Start the app
+2. Avvia l'applicazione in modalità sviluppo
 
    ```bash
-    npx expo start
+   npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+A questo punto potrai scegliere se aprire l'app su un dispositivo fisico con Expo Go, su un simulatore iOS/Android oppure in una development build dedicata.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Struttura del progetto
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **app/**: contiene le pagine e il routing dell'applicazione.
+- **Components/**: raccolta di componenti UI riutilizzabili.
+- **Context/**: provider di contesto per tema e utente.
+- **Screens/**: logica e layout delle varie schermate.
+- **hooks/**: custom hook (es. `useTheme`).
+- **utils/**: funzioni di utilità come la gestione della validazione.
 
-## Get a fresh project
+## Reset del progetto
 
-When you're ready, run:
+Se vuoi ripartire da zero mantenendo questo repository come base, esegui
 
 ```bash
 npm run reset-project
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Il comando sposterà gli esempi nella cartella `app-example` creando una nuova cartella `app` vuota.
 
-## Learn more
+## Ulteriori risorse
 
-To learn more about developing your project with Expo, look at the following resources:
+- [Documentazione Expo](https://docs.expo.dev/)
+- [Tutorial ufficiale](https://docs.expo.dev/tutorial/introduction/)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Buon divertimento con LineShare Expo!
