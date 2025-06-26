@@ -1,6 +1,7 @@
 import Background from "@/Components/Generali/Background";
 import DatePicker from "@/Components/Generali/DatePicker";
 import Dropdown from "@/Components/Generali/Dropdown";
+import RangeDatePicker from "@/Components/Generali/RangeDatePicker";
 import { useState } from "react";
 
 type Person = {
@@ -36,7 +37,7 @@ export default function HomePage() {
                 clearable
 
             />
-            <DatePicker placeholder="data" />
+            <RangeDatePicker placeholder="data" />
 
         </Background>
     )

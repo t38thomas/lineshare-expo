@@ -2,9 +2,20 @@ import BottomSheet from "./BottomSheet";
 import Button, { useButtonText } from "./Button";
 import Text from "./Text";
 import useTheme from "@/hooks/useTheme";
+<<<<<<< HEAD
 import { DateFormat, mesi } from "@/utils/DateFormat";
 import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { FlatList, Pressable, ScrollView, StyleProp, StyleSheet, TextInput, View, ViewStyle } from "react-native";
+=======
+import React, { useCallback, useMemo, useState } from "react";
+import { Pressable, ScrollView, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+>>>>>>> main
+=======
+import { DateFormat } from "@/utils/DateFormat";
+import React, { useCallback, useMemo, useState } from "react";
+import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import Calendar from "./Calendar";
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
 
 export type DateRange = {
     startDate?: Date;
@@ -23,6 +34,7 @@ export type RangeDatePickerProps = {
 export default function RangeDatePicker(props: RangeDatePickerProps) {
     const theme = useTheme();
     const [visible, setVisible] = useState(false);
+<<<<<<< HEAD
     const [start, setStart] = useState<Date>(props.value?.startDate ?? new Date());
     const [end, setEnd] = useState<Date>(props.value?.endDate ?? new Date());
     const [yearSheet, setYearSheet] = useState<"start" | "end" | undefined>(undefined);
@@ -32,6 +44,12 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
     useEffect(() => {
         setYearPage(1);
     }, [yearQuery]);
+=======
+>>>>>>> main
+=======
+    const [start, setStart] = useState<Date | undefined>(props.value?.startDate);
+    const [end, setEnd] = useState<Date | undefined>(props.value?.endDate);
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
 
     const display = useMemo(() => {
         if (props.value?.startDate && props.value?.endDate) {
@@ -45,6 +63,7 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
     }, [props.value, props.placeholder]);
 
     const open = useCallback(() => {
+<<<<<<< HEAD
         setStart(props.value?.startDate ?? new Date());
         setEnd(props.value?.endDate ?? new Date());
         setYearSheet(undefined);
@@ -127,11 +146,45 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
         setEnd(date);
     }, [end, daysInMonth]);
 
+=======
+        setStart(props.value?.startDate);
+        setEnd(props.value?.endDate);
+        setVisible(true);
+    }, [props.value]);
+
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
     const confirm = useCallback(() => {
         setVisible(false);
         props.onChange?.({ startDate: start, endDate: end });
     }, [start, end, props.onChange]);
 
+<<<<<<< HEAD
+=======
+    const onSelect = useCallback((d: Date) => {
+        if (start && !end) {
+            if (d.getTime() < start.getTime()) {
+                setEnd(start);
+                setStart(d);
+            } else {
+                setEnd(d);
+            }
+        } else {
+            setStart(d);
+            setEnd(undefined);
+        }
+    }, [start, end]);
+
+    const isSelected = useCallback((day: Date) => {
+        if (start && end) {
+            const min = start.getTime() < end.getTime() ? start : end;
+            const max = start.getTime() < end.getTime() ? end : start;
+            return day.getTime() >= min.getTime() && day.getTime() <= max.getTime();
+        }
+        if (start && !end) return day.toDateString() === start.toDateString();
+        return false;
+    }, [start, end]);
+
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
     return (
         <>
             <Pressable
@@ -142,6 +195,7 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
             </Pressable>
             <BottomSheet visible={visible} onRequestClose={() => setVisible(false)}>
                 <View style={styles.pickerContainer}>
+<<<<<<< HEAD
                     <Text style={styles.label}>Dal</Text>
                     <Pressable onPress={() => setYearSheet('start')}>
                         <Text style={styles.yearLabel}>{start.getFullYear()}</Text>
@@ -178,7 +232,64 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
                                 <Text style={d === end.getDate() ? { color: "white" } : undefined}>{d}</Text>
                             </Pressable>
                         ))}
+=======
+                    <View style={styles.selectRow}>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.selectScroll}>
+                            {daysStart.map((d) => (
+                                <Pressable key={"sd" + d} onPress={() => selectDayStart(d)} style={[styles.item, d === start.getDate() && { backgroundColor: theme.colors.lineshare }]}> 
+                                    <Text style={d === start.getDate() ? { color: "white" } : undefined}>{d}</Text>
+                                </Pressable>
+                            ))}
+                        </ScrollView>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.selectScroll}>
+                            {mesi.map((m, idx) => (
+                                <Pressable key={"sm" + idx} onPress={() => selectMonthStart(idx)} style={[styles.item, idx === start.getMonth() && { backgroundColor: theme.colors.lineshare }]}> 
+                                    <Text style={idx === start.getMonth() ? { color: "white" } : undefined}>{m.nome.slice(0,3)}</Text>
+                                </Pressable>
+                            ))}
+                        </ScrollView>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.selectScroll}>
+                            {years.map((y) => (
+                                <Pressable key={"sy" + y} onPress={() => selectYearStart(y)} style={[styles.item, y === start.getFullYear() && { backgroundColor: theme.colors.lineshare }]}> 
+                                    <Text style={y === start.getFullYear() ? { color: "white" } : undefined}>{y}</Text>
+                                </Pressable>
+                            ))}
+                        </ScrollView>
                     </View>
+                    <Text style={[styles.label, { marginTop: 20 }]}>Al</Text>
+                    <View style={styles.selectRow}>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.selectScroll}>
+                            {daysEnd.map((d) => (
+                                <Pressable key={"ed" + d} onPress={() => selectDayEnd(d)} style={[styles.item, d === end.getDate() && { backgroundColor: theme.colors.lineshare }]}> 
+                                    <Text style={d === end.getDate() ? { color: "white" } : undefined}>{d}</Text>
+                                </Pressable>
+                            ))}
+                        </ScrollView>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.selectScroll}>
+                            {mesi.map((m, idx) => (
+                                <Pressable key={"em" + idx} onPress={() => selectMonthEnd(idx)} style={[styles.item, idx === end.getMonth() && { backgroundColor: theme.colors.lineshare }]}> 
+                                    <Text style={idx === end.getMonth() ? { color: "white" } : undefined}>{m.nome.slice(0,3)}</Text>
+                                </Pressable>
+                            ))}
+                        </ScrollView>
+                        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.selectScroll}>
+                            {years.map((y) => (
+                                <Pressable key={"ey" + y} onPress={() => selectYearEnd(y)} style={[styles.item, y === end.getFullYear() && { backgroundColor: theme.colors.lineshare }]}> 
+                                    <Text style={y === end.getFullYear() ? { color: "white" } : undefined}>{y}</Text>
+                                </Pressable>
+                            ))}
+                        </ScrollView>
+>>>>>>> main
+                    </View>
+=======
+                    <Calendar
+                        date={end ?? start ?? new Date()}
+                        onSelect={onSelect}
+                        minimumDate={props.minimumDate}
+                        maximumDate={props.maximumDate}
+                        isSelected={isSelected}
+                    />
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
                     <View style={styles.buttonContainer}>
                         <Button onPress={confirm} width={150}>
                             <Text style={useButtonText()}>Conferma</Text>
@@ -186,6 +297,8 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
                     </View>
                 </View>
             </BottomSheet>
+<<<<<<< HEAD
+<<<<<<< HEAD
 
             <BottomSheet visible={yearSheet !== undefined} onRequestClose={() => setYearSheet(undefined)} >
                 <View style={styles.yearContainer}>
@@ -216,6 +329,10 @@ export default function RangeDatePicker(props: RangeDatePickerProps) {
                     />
                 </View>
             </BottomSheet>
+=======
+>>>>>>> main
+=======
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
         </>
     );
 }
@@ -232,15 +349,19 @@ const styles = StyleSheet.create({
         padding: 20,
         alignItems: "center",
     },
+<<<<<<< HEAD
     label: {
         fontSize: 16,
         fontFamily: "Sora-Bold",
         marginBottom: 10,
     },
+=======
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
     buttonContainer: {
         marginTop: 20,
         alignItems: "center",
     },
+<<<<<<< HEAD
     selectRow: {
         flexDirection: "row",
         columnGap: 10,
@@ -287,4 +408,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginVertical: 5,
     },
+=======
+>>>>>>> main
+=======
+>>>>>>> dbf654825101ef60022054c52587395d42f84b34
 });
